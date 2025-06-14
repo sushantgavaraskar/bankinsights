@@ -24,6 +24,7 @@ class FinancialInsightsView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
+        logger.info(f" Generating financial insights for user: {request.user.email}")
         user = request.user
         try:
             data = {
@@ -48,6 +49,7 @@ class UserTransactionListView(generics.ListAPIView):
     ordering_fields = ['date', 'amount']
 
     def get_queryset(self):
+        logger.info(f"Fetching transactions for user: {self.request.user.email}")
         user = self.request.user
         month = self.request.query_params.get('month')
         queryset = Transaction.objects.filter(user=user)
@@ -65,6 +67,7 @@ class ExportAllTransactionsCSV(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
+        logger.info(f"Exporting all transactions to CSV for user: {request.user.email}")
         user = request.user
         try:
             transactions = Transaction.objects.filter(user=user)

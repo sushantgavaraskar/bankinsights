@@ -1,6 +1,5 @@
 
-```
-bankinsight_backend
+bankinsight
 ├─ .env
 ├─ bankinsight_backend
 │  ├─ settings.py
@@ -10,8 +9,56 @@ bankinsight_backend
 │  └─ __pycache__
 │     ├─ settings.cpython-311.pyc
 │     ├─ urls.cpython-311.pyc
+│     ├─ wsgi.cpython-311.pyc
 │     └─ __init__.cpython-311.pyc
+├─ client
+│  ├─ .env
+│  ├─ package-lock.json
+│  ├─ package.json
+│  ├─ public
+│  │  ├─ favicon.ico
+│  │  ├─ index.html
+│  │  ├─ logo192.png
+│  │  ├─ logo512.png
+│  │  ├─ manifest.json
+│  │  └─ robots.txt
+│  ├─ README.md
+│  └─ src
+│     ├─ App.css
+│     ├─ App.js
+│     ├─ App.test.js
+│     ├─ components
+│     │  ├─ ChartsSection.js
+│     │  ├─ FileUploader.js
+│     │  ├─ InsightCards.js
+│     │  ├─ Navbar.js
+│     │  ├─ StatementActions.js
+│     │  ├─ TopNav.js
+│     │  └─ TransactionTable.js
+│     ├─ context
+│     │  └─ AuthContext.js
+│     ├─ index.css
+│     ├─ index.js
+│     ├─ logo.svg
+│     ├─ pages
+│     │  ├─ ChangePassword.js
+│     │  ├─ Dashboard.js
+│     │  ├─ Login.js
+│     │  └─ Register.js
+│     ├─ reportWebVitals.js
+│     ├─ routes.js
+│     ├─ services
+│     │  └─ api.js
+│     ├─ setupTests.js
+│     └─ styles
+│        └─ global.css
 ├─ core
+│  ├─ migrations
+│  │  ├─ 0001_initial.py
+│  │  ├─ __init__.py
+│  │  └─ __pycache__
+│  │     ├─ 0001_initial.cpython-311.pyc
+│  │     └─ __init__.cpython-311.pyc
 │  ├─ models
 │  │  ├─ statement.py
 │  │  ├─ transaction.py
@@ -63,7 +110,15 @@ bankinsight_backend
 │     └─ urls.cpython-311.pyc
 ├─ manage.py
 ├─ media
-├─ requirements.txt
-└─ test.py
+│  └─ statements
+│     ├─ sample_bank_statement.pdf
+│     ├─ sample_bank_statement_erFPHqQ.pdf
+│     ├─ sample_bank_statement_EyAdWYQ.pdf
+│     ├─ sample_bank_statement_J2yqFS5.pdf
+│     ├─ sample_bank_statement_qw0yuce.pdf
+│     ├─ sample_bank_statement_uZBkevu.pdf
+│     └─ sample_bank_statement_yZcGpcs.pdf
+├─ README.md
+└─ requirements.txt
 
 ```

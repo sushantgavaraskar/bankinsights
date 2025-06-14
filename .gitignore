@@ -1,0 +1,35 @@
+test.py
+project_dump.txt
+.git
+# ========== PYTHON / DJANGO ==========
+__pycache__/
+*.py[cod]
+*.sqlite3
+*.log
+*.db
+*.pot
+*.pyc
+*.pyo
+*.pyd
+.env
+.env.local
+media/
+staticfiles/
+static/
+
+
+
+# ========== DOCKER / SYSTEM ==========
+*.pid
+*.tar
+*.gz
+*.zip
+*.tgz
+*.bak
+.DS_Store
+*.swp
+*.swo
+.vscode/
+.idea/
+docker-compose.override.yml
+

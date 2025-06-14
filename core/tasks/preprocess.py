@@ -3,22 +3,45 @@ from datetime import datetime
 from transformers import pipeline
 from core.models.transaction import Transaction
 from core.models.statement import Statement
+from core.tasks.ai_service import TransactionCategorizer
 import logging
 
 logger = logging.getLogger(__name__)
 
-# 🧠 Load the BERT model for transaction categorization
-try:
-    bert_model = pipeline(
-        "text-classification",
-        model="kuro-08/bert-transaction-categorization",
-        tokenizer="kuro-08/bert-transaction-categorization"
-    )
-except Exception as e:
-    bert_model = None
-    logger.warning(f"BERT model load failed: {e}")
+# Load the BERT model for transaction categorization
 
-# 🧠 Support multiple transaction formats with flexible patterns
+bert_model = TransactionCategorizer()
+#  Mapping of model output labels to real categories
+LABEL_MAP = {
+    "Label_0": "Utilities",
+    "Label_1": "Health",
+    "Label_2": "Dining",
+    "Label_3": "Travel",
+    "Label_4": "Education",
+    "Label_5": "Subscription",
+    "Label_6": "Family",
+    "Label_7": "Food",
+    "Label_8": "Festivals",
+    "Label_9": "Culture",
+    "Label_10": "Apparel",
+    "Label_11": "Transportation",
+    "Label_12": "Investment",
+    "Label_13": "Shopping",
+    "Label_14": "Groceries",
+    "Label_15": "Documents",
+    "Label_16": "Grooming",
+    "Label_17": "Entertainment",
+    "Label_18": "Social Life",
+    "Label_19": "Beauty",
+    "Label_20": "Rent",
+    "Label_21": "Money transfer",
+    "Label_22": "Salary",
+    "Label_23": "Tourism",
+    "Label_24": "Household",
+}
+
+
+# Regular expressions to match various bank statement formats
 REGEX_PATTERNS = [
     {
         "pattern": re.compile(
@@ -41,12 +64,14 @@ REGEX_PATTERNS = [
         "date_format": "%Y-%m-%d",
         "has_crdr": False
     },
-    # Add more patterns here...
+    # Add more patterns as needed
 ]
+
 
 def extract_transactions(raw_text):
     """
     Try all known patterns and extract transactions intelligently.
+    Returns a list of dicts with keys: date, description, amount, is_credit
     """
     for parser in REGEX_PATTERNS:
         pattern = parser["pattern"]
@@ -86,20 +111,30 @@ def extract_transactions(raw_text):
         if transactions:
             return transactions
 
-    logger.warning("❌ No matching regex patterns found for transaction extraction.")
+    logger.warning("No matching regex patterns found for transaction extraction.")
     return []
 
 
 def categorize_transaction(description):
-    """
-    Categorize a transaction using BERT or return 'Uncategorized'.
-    """
     if not bert_model:
+        logger.warning("BERT model not available, defaulting to 'Uncategorized'.")
         return "Uncategorized"
 
     try:
-        result = bert_model(description[:256])[0]
-        return result["label"]
+        outputs = bert_model(description[:256])
+        if not outputs or not isinstance(outputs, list) or not isinstance(outputs[0], dict):
+            logger.warning(f"Unexpected model output: {outputs}")
+            return "Uncategorized"
+
+        result = outputs[0]
+        raw_label = result.get("label", "")
+        normalized_label = raw_label.capitalize().replace("label_", "Label_")
+        category = LABEL_MAP.get(normalized_label, "Uncategorized")
+
+        logger.info(f"Categorized: '{description[:30]}...' as '{category}' (label: {normalized_label})")
+
+        return category
+
     except Exception as e:
         logger.warning(f"Categorization failed for '{description}': {e}")
         return "Uncategorized"

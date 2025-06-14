@@ -18,6 +18,7 @@ class StatementUploadView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request):
+        logger.info(f"Statement upload attempt by user: {request.user.email}")
         serializer = StatementUploadSerializer(data=request.data)
         if serializer.is_valid():
             statement = serializer.save(user=request.user)
@@ -46,6 +47,7 @@ class ReprocessStatementView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request, statement_id):
+        logger.info(f"Reprocessing statement {statement_id} for user {request.user.email}")
         try:
             statement = Statement.objects.get(id=statement_id, user=request.user)
         except Statement.DoesNotExist:

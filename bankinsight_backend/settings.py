@@ -16,39 +16,30 @@ SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(hours=1),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
 }
-# ✅ CSRF setup for frontend access (adjust on deployment)
+# CSRF setup for frontend access (adjust on deployment)
 CSRF_TRUSTED_ORIGINS = os.getenv("CSRF_TRUSTED_ORIGINS", "").split(",")
 
-# ✅ CORS configuration
+# CORS configuration
 CORS_ALLOW_ALL_ORIGINS = os.getenv("CORS_ALLOW_ALL_ORIGINS", "True") == "True"
 # Uncomment below for deployment if CORS_ALLOW_ALL_ORIGINS=False
 # CORS_ALLOWED_ORIGINS = os.getenv("CORS_ALLOWED_ORIGINS", "").split(",")
 
-# 🚀 PRODUCTION ONLY — Secure cookies over HTTPS
+# PRODUCTION ONLY — Secure cookies over HTTPS
 # SESSION_COOKIE_SECURE = True
 # CSRF_COOKIE_SECURE = True
 
-# 🚀 PRODUCTION ONLY — Disable CORS for all origins
+# PRODUCTION ONLY — Disable CORS for all origins
 # CORS_ALLOW_ALL_ORIGINS = False
 # CORS_ALLOWED_ORIGINS = os.getenv("CORS_ALLOWED_ORIGINS", "").split(",")
 
-# 🚀 PRODUCTION ONLY — Turn off debug mode
+# PRODUCTION ONLY — Turn off debug mode
 # DEBUG=False
 
-# 🚀 PRODUCTION ONLY — Set allowed hosts
+# PRODUCTION ONLY — Set allowed hosts
 # ALLOWED_HOSTS = ["yourdomain.com", "api.yourdomain.com"]
 
-# 🚀 PRODUCTION ONLY — API Rate Limits
-# REST_FRAMEWORK.update({
-#     "DEFAULT_THROTTLE_CLASSES": [
-#         "rest_framework.throttling.UserRateThrottle",
-#         "rest_framework.throttling.AnonRateThrottle",
-#     ],
-#     "DEFAULT_THROTTLE_RATES": {
-#         "user": "1000/day",
-#         "anon": "100/day"
-#     }
-# })
+# PRODUCTION ONLY — API Rate Limits
+
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -64,6 +55,8 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    "whitenoise.middleware.WhiteNoiseMiddleware",
+
     "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -112,6 +105,8 @@ USE_I18N = True
 USE_TZ = True
 
 STATIC_URL = "/static/"
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+
 STATIC_ROOT = os.path.join(BASE_DIR, "static/")
 
 MEDIA_URL = "/media/"
@@ -124,6 +119,14 @@ REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": [
         "rest_framework.permissions.IsAuthenticated",
     ],
+    "DEFAULT_THROTTLE_CLASSES": [
+        "rest_framework.throttling.UserRateThrottle",
+        "rest_framework.throttling.AnonRateThrottle",
+    ],
+    "DEFAULT_THROTTLE_RATES": {
+        "user": "1000/day",
+        "anon": "100/day"
+    }
 }
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
