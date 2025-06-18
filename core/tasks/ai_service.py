@@ -1,6 +1,7 @@
 # core/tasks/ai_service.py
 from transformers import pipeline
 import logging
+import re
 
 logger = logging.getLogger(__name__)
 

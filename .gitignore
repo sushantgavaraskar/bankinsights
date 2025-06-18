@@ -1,6 +1,6 @@
 test.py
 project_dump.txt
-.git
+
 # ========== PYTHON / DJANGO ==========
 __pycache__/
 *.py[cod]
