@@ -49,7 +49,5 @@ TransactIQ is a personal finance web app that helps users upload and analyze the
 
 ---
 
-## 👨‍💻 Author
 
-This is a personal project developed by **Sarthak Kale**.
 
