@@ -13,7 +13,7 @@ __pycache__/
 *.pyd
 .env
 .env.local
-media/
+
 staticfiles/
 static/
 
