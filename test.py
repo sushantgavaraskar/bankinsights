@@ -43,4 +43,4 @@ def dump_project_to_txt(root_dir, output_file):
                     f.write(f"{sub_indent}[Could not read {filename}: {e}]\n")
 
 # Example usage
-dump_project_to_txt(".", "project_dump.txt")
+dump_project_to_txt(".", "project.txt")
